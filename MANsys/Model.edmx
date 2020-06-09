@@ -1,0 +1,354 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="GlobalDesignModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CustomerAccount">
+          <Key>
+            <PropertyRef Name="CustomerMail" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerName" Type="nvarchar" MaxLength="30" />
+          <Property Name="CustomerMail" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="CustomerPassword" Type="nvarchar" MaxLength="30" />
+          <Property Name="CustomerDistrict" Type="nvarchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="CustomerOldBooking">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerMail" Type="nvarchar" MaxLength="30" />
+          <Property Name="CustomerName" Type="nvarchar(max)" />
+          <Property Name="CustomerPhoneNumber" Type="nvarchar(max)" />
+          <Property Name="BookingDate" Type="nvarchar(max)" />
+          <Property Name="BookingMessage" Type="nvarchar(max)" />
+          <Property Name="RestaurantMail" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CustomerService">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RestaurantMail" Type="nvarchar" MaxLength="50" />
+          <Property Name="TableName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ItemName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ItemPrice" Type="int" />
+        </EntityType>
+        <EntityType Name="RestaurantAccounts">
+          <Key>
+            <PropertyRef Name="RestaurantMail" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RestaurantName" Type="nvarchar(max)" />
+          <Property Name="RestaurantMail" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RestaurantPassword" Type="nvarchar(max)" />
+          <Property Name="ConfirmPassword" Type="nvarchar(max)" />
+          <Property Name="RestaurantAdress" Type="nvarchar(max)" />
+          <Property Name="RestaurantDistrict" Type="nvarchar(max)" />
+          <Property Name="RestaurantCity" Type="nvarchar(max)" />
+          <Property Name="RestaurantPhone" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="RestaurantCategories">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RestaurantMail" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CategoryName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="RestaurantItems">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RestaurantMail" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ItemCategory" Type="nvarchar" MaxLength="50" />
+          <Property Name="ItemName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ItemPrice" Type="int" />
+        </EntityType>
+        <EntityType Name="RestaurantProcess">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RestaurantMail" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProcessName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProcessDate" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProcessStatus" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="RestaurantTable">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RestaurantMail" Type="nvarchar" MaxLength="50" />
+          <Property Name="TableName" Type="nvarchar" MaxLength="20" />
+          <Property Name="TableSeatNumber" Type="int" />
+          <Property Name="TableBooking" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="TableIncome">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RestaurantMail" Type="nvarchar(max)" />
+          <Property Name="TableName" Type="nvarchar(max)" />
+          <Property Name="Price" Type="nvarchar(max)" />
+          <Property Name="Date" Type="date" />
+        </EntityType>
+        <EntityContainer Name="GlobalDesignModelStoreContainer">
+          <EntitySet Name="CustomerAccount" EntityType="Self.CustomerAccount" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CustomerOldBooking" EntityType="Self.CustomerOldBooking" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CustomerService" EntityType="Self.CustomerService" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RestaurantAccounts" EntityType="Self.RestaurantAccounts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RestaurantCategories" EntityType="Self.RestaurantCategories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RestaurantItems" EntityType="Self.RestaurantItems" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RestaurantProcess" EntityType="Self.RestaurantProcess" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RestaurantTable" EntityType="Self.RestaurantTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TableIncome" EntityType="Self.TableIncome" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="GlobalDesignModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CustomerAccount">
+          <Key>
+            <PropertyRef Name="CustomerMail" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerMail" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CustomerPassword" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerDistrict" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CustomerService">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RestaurantMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TableName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ItemName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ItemPrice" Type="Int32" />
+        </EntityType>
+        <EntityType Name="RestaurantAccounts">
+          <Key>
+            <PropertyRef Name="RestaurantMail" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RestaurantName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RestaurantMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RestaurantPassword" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ConfirmPassword" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RestaurantAdress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RestaurantDistrict" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RestaurantCity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RestaurantPhone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="RestaurantCategories">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RestaurantMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="RestaurantItems">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RestaurantMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ItemCategory" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ItemName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ItemPrice" Type="Int32" />
+        </EntityType>
+        <EntityType Name="RestaurantProcess">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RestaurantMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="RestaurantTable">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RestaurantMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TableName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="TableSeatNumber" Type="Int32" />
+          <Property Name="TableBooking" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityContainer Name="GlobalDesignEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CustomerAccount" EntityType="Self.CustomerAccount" />
+          <EntitySet Name="CustomerService" EntityType="Self.CustomerService" />
+          <EntitySet Name="RestaurantAccounts" EntityType="Self.RestaurantAccounts" />
+          <EntitySet Name="RestaurantCategories" EntityType="Self.RestaurantCategories" />
+          <EntitySet Name="RestaurantItems" EntityType="Self.RestaurantItems" />
+          <EntitySet Name="RestaurantProcess" EntityType="Self.RestaurantProcess" />
+          <EntitySet Name="RestaurantTable" EntityType="Self.RestaurantTable" />
+          <EntitySet Name="CustomerOldBooking" EntityType="GlobalDesignModel.CustomerOldBooking" />
+          <EntitySet Name="TableIncome" EntityType="GlobalDesignModel.TableIncome" />
+        </EntityContainer>
+        <EntityType Name="CustomerOldBooking">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerMail" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerPhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BookingDate" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BookingMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RestaurantMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TableIncome">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RestaurantMail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TableName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="GlobalDesignModelStoreContainer" CdmEntityContainer="GlobalDesignEntities">
+          <EntitySetMapping Name="CustomerAccount">
+            <EntityTypeMapping TypeName="GlobalDesignModel.CustomerAccount">
+              <MappingFragment StoreEntitySet="CustomerAccount">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="CustomerMail" ColumnName="CustomerMail" />
+                <ScalarProperty Name="CustomerPassword" ColumnName="CustomerPassword" />
+                <ScalarProperty Name="CustomerDistrict" ColumnName="CustomerDistrict" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerService">
+            <EntityTypeMapping TypeName="GlobalDesignModel.CustomerService">
+              <MappingFragment StoreEntitySet="CustomerService">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="RestaurantMail" ColumnName="RestaurantMail" />
+                <ScalarProperty Name="TableName" ColumnName="TableName" />
+                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+                <ScalarProperty Name="ItemPrice" ColumnName="ItemPrice" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RestaurantAccounts">
+            <EntityTypeMapping TypeName="GlobalDesignModel.RestaurantAccounts">
+              <MappingFragment StoreEntitySet="RestaurantAccounts">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="RestaurantName" ColumnName="RestaurantName" />
+                <ScalarProperty Name="RestaurantMail" ColumnName="RestaurantMail" />
+                <ScalarProperty Name="RestaurantPassword" ColumnName="RestaurantPassword" />
+                <ScalarProperty Name="ConfirmPassword" ColumnName="ConfirmPassword" />
+                <ScalarProperty Name="RestaurantAdress" ColumnName="RestaurantAdress" />
+                <ScalarProperty Name="RestaurantDistrict" ColumnName="RestaurantDistrict" />
+                <ScalarProperty Name="RestaurantCity" ColumnName="RestaurantCity" />
+                <ScalarProperty Name="RestaurantPhone" ColumnName="RestaurantPhone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RestaurantCategories">
+            <EntityTypeMapping TypeName="GlobalDesignModel.RestaurantCategories">
+              <MappingFragment StoreEntitySet="RestaurantCategories">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="RestaurantMail" ColumnName="RestaurantMail" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RestaurantItems">
+            <EntityTypeMapping TypeName="GlobalDesignModel.RestaurantItems">
+              <MappingFragment StoreEntitySet="RestaurantItems">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="RestaurantMail" ColumnName="RestaurantMail" />
+                <ScalarProperty Name="ItemCategory" ColumnName="ItemCategory" />
+                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+                <ScalarProperty Name="ItemPrice" ColumnName="ItemPrice" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RestaurantProcess">
+            <EntityTypeMapping TypeName="GlobalDesignModel.RestaurantProcess">
+              <MappingFragment StoreEntitySet="RestaurantProcess">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="RestaurantMail" ColumnName="RestaurantMail" />
+                <ScalarProperty Name="ProcessName" ColumnName="ProcessName" />
+                <ScalarProperty Name="ProcessDate" ColumnName="ProcessDate" />
+                <ScalarProperty Name="ProcessStatus" ColumnName="ProcessStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RestaurantTable">
+            <EntityTypeMapping TypeName="GlobalDesignModel.RestaurantTable">
+              <MappingFragment StoreEntitySet="RestaurantTable">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="RestaurantMail" ColumnName="RestaurantMail" />
+                <ScalarProperty Name="TableName" ColumnName="TableName" />
+                <ScalarProperty Name="TableSeatNumber" ColumnName="TableSeatNumber" />
+                <ScalarProperty Name="TableBooking" ColumnName="TableBooking" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerOldBooking">
+            <EntityTypeMapping TypeName="GlobalDesignModel.CustomerOldBooking">
+              <MappingFragment StoreEntitySet="CustomerOldBooking">
+                <ScalarProperty Name="RestaurantMail" ColumnName="RestaurantMail" />
+                <ScalarProperty Name="BookingMessage" ColumnName="BookingMessage" />
+                <ScalarProperty Name="BookingDate" ColumnName="BookingDate" />
+                <ScalarProperty Name="CustomerPhoneNumber" ColumnName="CustomerPhoneNumber" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="CustomerMail" ColumnName="CustomerMail" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TableIncome">
+            <EntityTypeMapping TypeName="GlobalDesignModel.TableIncome">
+              <MappingFragment StoreEntitySet="TableIncome">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="TableName" ColumnName="TableName" />
+                <ScalarProperty Name="RestaurantMail" ColumnName="RestaurantMail" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

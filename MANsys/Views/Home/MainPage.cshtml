@@ -1,0 +1,858 @@
+﻿
+@{
+    ViewBag.Title = "MainPage";
+}
+<html>
+<head>
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="~/Content/MainPage.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+<body>
+    <div class="vertical-nav" id="sidebar">
+        <div class="py-4 px-3 mb-4 bg-light" style="margin-top:1rem">
+            <div class="media d-flex text-center">
+                <img src="~/Image/iconfinder.png" alt="..." width="75" class="mr-3 img-thumbnail shadow-sm" />
+            </div>
+        </div>
+
+        <ul class="nav nav-tans flex-column bg-white mb-0" role="tablist" id="myTab">
+            <li class="nav-item ">
+                <a class="nav-link active" data-toggle="tab" href="#home">Home<span style="font-size:16px;" class="pull-right hidden-xs glyphicon glyphicon-home"></span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " data-toggle="tab" href="#AllTables">Restaurant Tables<span style="font-size:16px;" class="pull-right hidden-xs glyphicon glyphicon-bed"></span></a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" data-toggle="tab" href="#AllReservation">Reservations<span style="font-size:16px;" class="pull-right hidden-xs glyphicon glyphicon-calendar"></span></a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" data-toggle="tab" href="#AllProcess">Restaurant Process<span style="font-size:16px;" class="pull-right hidden-xs glyphicon glyphicon-shopping-cart"></span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#UserSettings">User Account<span style="font-size:16px;" class="pull-right hidden-xs glyphicon glyphicon-user"></span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#ItemSetting">Items Updates<span style="font-size:16px;" class="pull-right hidden-xs glyphicon glyphicon-cutlery"></span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#TableSetting">Tables Updates<span style="font-size:16px;" class="pull-right hidden-xs glyphicon glyphicon-credit-card"></span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#CategorySetting">Category Updates<span style="font-size:16px;" class="pull-right hidden-xs glyphicon glyphicon-th-large"></span></a>
+            </li>
+
+
+            <li>
+                <form method="post" action="@Url.Action("SignOut", "Account")" id="signoutfrm" style="display:none;">
+                    @Html.AntiForgeryToken()
+                </form>
+                <a href="" onclick="$('#signoutfrm').submit(); return false;">Logout</a>
+            </li>
+        </ul>
+    </div>
+    <div class="page-content p-5 tab-content" id="content">
+        <div id="home" class="container tab-pane active">
+            <h2>Welcome to <span id="RESTAURANTNAME"></span> Restaurant</h2>
+            <h3>Restaurant Mail: <span id="LogRest">@User.Identity.Name</span></h3>
+            <p>Restaurant Management and Reservation System - Global Design Project</p>
+         
+                <div  id="linechart" style="float:left">
+
+
+                </div>
+
+                <div id="piechart" style="float:left">
+
+
+                </div>
+           
+        </div>
+        <div class="container tab-pane fade" id="AllTables">
+            <div class="panel with-nav-tabs panel-default">
+                <div class="panel-heading text-center">
+                    <h3>Restaurant Table </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row btn-group" id="table">
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="AllReservation" class="container tab-pane fade">
+            <div class="panel with-nav-tabs panel-default">
+                <div class="panel-heading text-center">
+                    <h3>Reservation Panel </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row" id="Reservation">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="AllProcess" class="container tab-pane fade">
+            <div class="panel with-nav-tabs panel-default">
+                <div class="panel-heading text-center">
+                    <h3>Payment & Debt </h3>
+                </div>
+                <div class="panel-body">
+                    <form id="formBill">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="glyphicon glyphicon-shopping-cart"></th>
+                                    <th>Process Name</th>
+                                    <th>Process Date</th>
+                                    <th>Process Amount</th>
+                                    <th>Action </th>
+                                </tr>
+                                <tr>
+                                    <th><label id="processid" style='display:none'></label></th>
+                                    <th><input id="bill" type="text" class="form-control text-center" placeholder="Bill" /></th>
+                                    <th><input id="PaymentDate" type="date" class="form-control text-center" placeholder="Payment Date" /></th>
+                                    <th><input id="PaymentStatus" type="text" class="form-control text-center" placeholder="Payment Amount" /></th>
+                                    <th>
+                                        <input id="AddBill" type="button" class="btn btn-primary  text-center" value="Submit" />
+                                        <input class="btn btn-success" value="Update" type="button" id="updateprocess" />
+                                        <input class="btn btn-danger" value="Delete" type="button" id="deleteprocess" />
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody class="table-primary" id="BillTable">
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="UserSettings" class="container tab-pane fade">
+            <div class="panel with-nav-tabs panel-default">
+                <div class="panel-heading text-center">
+                    <h3>User Account</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="tab-content">
+                        <div id="UserSetting" class="tab-pane fade in active" role="tabpanel">
+                            <form id="formUser">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="glyphicon glyphicon-user"></th>
+                                            <th>User Mail</th>
+                                            <th>User Password</th>
+                                            <th>Action </th>
+                                        </tr>
+                                        <tr>
+                                            <th><label id="userid" style="display:none"></label></th>
+                                            <th><input type="text" class="form-control text-center" placeholder="User Mail" /></th>
+                                            <th><input type="password" class="form-control text-center" placeholder="User Password" /></th>
+                                            <th>
+                                                <input class="btn btn-primary" value="Submit" type="button" />
+                                                <input class="btn btn-success" value="Update" type="button" />
+                                                <input class="btn btn-danger" value="Delete" type="button" />
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-primary" id="userTable"></tbody>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="CategorySetting" class="container tab-pane fade">
+            <div class="panel with-nav-tabs panel-default">
+                <div class="panel-heading text-center">
+                    <h3>Category Update</h3>
+                </div>
+                <div id="CategorySetting" class="panel-body">
+                    <form id="formCategory">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="glyphicon glyphicon-th-large"></th>
+                                    <th>Category Name</th>
+                                    <th>Action </th>
+                                </tr>
+                                <tr>
+                                    <th><label id="categoryid" style='display:none'></label></th>
+                                    <th style="width:350px"><input type="text" class="form-control text-center" placeholder="Category Name" id="categoryname" /></th>
+                                    <th>
+                                        <input class="btn btn-primary" value="Add" type="button" id="addcategory" />
+                                        <input class="btn btn-success" value="Update" type="button" id="updatecategory" />
+                                        <input class="btn btn-danger" value="Delete" type="button" id="deletecategory" />
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-primary" id="categoryTable"></tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="ItemSetting" class="container tab-pane fade">
+            <div class="panel with-nav-tabs panel-default">
+                <div class="panel-heading text-center">
+                    <h3>Items Update</h3>
+                </div>
+                <div id="ItemSetting" class="panel-body">
+                    <form id="formItems">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="glyphicon glyphicon-cutlery"></th>
+                                    <th>Category</th>
+                                    <th>Item Name</th>
+                                    <th>Item Price</th>
+                                    <th>Action </th>
+                                </tr>
+                                <tr>
+                                    <th><label id="itemid" style='display:none'></label></th>
+                                    <th>
+                                        <select class="selectpicker" id="itemcategory" style="height:3.5rem;width:150px">
+                                            <option value="" disabled selected>Choose Category..</option>
+                                        </select>
+                                    </th>
+                                    <th><input type="text" class="form-control text-center" placeholder="Name" id="itemname" /></th>
+                                    <th><input type="text" class="form-control text-center" placeholder="Price" id="itemprice" /></th>
+                                    <th>
+                                        <input class="btn btn-primary" value="Add" type="button" id="additem" />
+                                        <input class="btn btn-success" value="Update" type="button" id="updateitem" />
+                                        <input class="btn btn-danger" value="Delete" type="button" id="deleteitem" />
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-primary" id="itemTable"></tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="TableSetting" class="container tab-pane fade">
+            <div class="panel with-nav-tabs panel-default">
+                <div class="panel-heading text-center">
+                    <h3>Tables Update</h3>
+                </div>
+                <div id="TableSetting" class="panel-body">
+                    <form id="formTables">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="glyphicon glyphicon-credit-card"></th>
+                                    <th>Table Name</th>
+                                    <th>Seat Number</th>
+                                    <th>Booking</th>
+                                    <th>Action </th>
+                                </tr>
+                                <tr>
+                                    <th><label id="tableid" style='display:none'></label></th>
+                                    <th><input type="text" class="form-control text-center" placeholder="Table Name" id="tablename" /></th>
+                                    <th><input type="text" class="form-control text-center" placeholder="Number of Seat " id="seatnumber" /></th>
+                                    <th id="SeatBooking">
+                                        <select class="selectpicker" id="booking" style="width:10rem;height:3.5rem">
+                                            <option>Free</option>
+                                            <option>Reserv</option>
+                                        </select>
+                                    </th>
+                                    <th>
+                                        <input class="btn btn-primary" value="Submit" type="button" id="addtable" />
+                                        <input class="btn btn-success" value="Update" type="button" id="updatetable" />
+                                        <input class="btn btn-danger" value="Delete" type="button" id="deletetable" />
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-primary" id="tablesTable" style="margin-left:15px">
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+
+        $(document).ready(function () {
+            var span = document.getElementById("LogRest");
+            $.ajax(
+            {
+                type: 'GET',
+                url: 'https://localhost:44382/api/Restaurant/GetName/?mail=' +'@User.Identity.Name',
+                success: function (name) {
+                    document.getElementById('RESTAURANTNAME').innerHTML = name;
+                }
+            });
+            $.ajax(
+                {
+                    type: 'GET',
+                    url: 'https://localhost:44382/api/Restaurant/GetTables/?mail=' + span.innerText,
+                    success: function (tables) {
+                        $.each(tables, function (i, table) {
+
+                            $('#tablesTable').append("<tr><td><label style='display:none'>" + table.Id + "</label></td>" + "<td>" + table.TableName + "</td>" + "<td>" + table.TableSeatNumber + " Person</td>" + "<td>" + table.TableBooking + " </td>" + "<td><a class='glyphicon glyphicon-pencil' id='updateTable'></a> </td>" + "</tr>");
+                            if (table.TableBooking == "Free") {
+                                $('#table').append('<div class="card text-white mb-3 " style="background-color:#5cb85c; margin:1rem; min-width: 12rem;float:left; border-radius: 12px;">' +
+                                    '<div class="card-header text-center">' +
+                                    '<a id=' + table.Id + ' class="nav-link " href="@Url.Action("TablePage", "Home")" style="color:white">' + table.TableName + '</a>' +
+                                    '</div>' +
+                                    '<div class="card-content text-center">' +
+                                    '<h5 class="card-title text-center" style="color:white">' + table.TableSeatNumber + ' Seat</h5>' +
+                                    '</div>' +
+                                    '</div>');
+                            }
+                            else if (table.TableBooking=="Full") {
+                                $('#table').append('<div class="card text-white  mb-3 " style="background-color:#f0ad4e;margin:1rem; min-width: 12rem;float:left; border-radius: 12px;">' +
+                                    '<div class="card-header text-center">' +
+                                    '<a id=' + table.Id + ' class="nav-link" href="@Url.Action("TablePage", "Home")" style="color:white">' + table.TableName + '</a>' +
+                                    '</div>' +
+                                    '<div class="card-content text-center">' +
+                                    '<h5 class="card-title text-center" style="color:white">' + table.TableSeatNumber + ' Seat</h5>' +
+                                    '</div>' +
+                                    '</div>');
+                            }
+                            else {
+                                $('#table').append('<div class="card text-white  mb-3 " style="background-color:#d9534f;margin:1rem; min-width: 12rem;float:left; border-radius: 12px;">' +
+                                    '<div class="card-header text-center">' +
+                                    '<a id=' + table.Id + ' class="nav-link" href="@Url.Action("TablePage", "Home")" style="color:white">' + table.TableName + '</a>' +
+                                    '</div>' +
+                                    '<div class="card-content text-center">' +
+                                    '<h5 class="card-title text-center" style="color:white">' + table.TableSeatNumber + ' Seat</h5>' +
+                                    '</div>' +
+                                    '</div>');
+                            }
+
+                        })
+
+                    }
+
+                });
+            $.ajax({
+                type: 'Get',
+                url: 'https://localhost:44382/api/Restaurant/GetReservation/?restmail=' + span.innerText,
+                success: function (reservation) {
+                    $.each(reservation, function (i, reserv) {
+                        $('#Reservation').append(
+                            '<div class="card text-white mb-3" style="background-color:#f0ad4e; margin:1rem;max-width: 18rem;float:left; border-radius: 12px;">' +
+                            '<div class="card-header text-center">' + reserv.BookingMessage + '</div>' +
+                            '<div class="card-body  text-center">'+
+                                '<h5 class="card-title">' + reserv.CustomerName + '</h5>' +
+                                '<p class="card-text">' + reserv.BookingDate + '</p>' +
+                                '<p class="card-text">' + reserv.CustomerPhoneNumber + '</p>' +
+                                '<p class="card-text">' + reserv.CustomerMail + '</p>' +
+                            '</div>'+
+                            '<div class="card-footer text-center">'+
+                            '<a class="glyphicon glyphicon-remove" id="cancelRes"></a>'+
+                            '</div>'+
+                            '</div>'
+
+                        );
+                    })
+                }
+            })
+
+            $('#Reservation').on('click','#cancelRes',function () {
+                alert('asd');
+            })
+
+            $(document).click(function (event) {
+                var tablename = $(event.target).text();
+                localStorage.setItem("name", tablename);
+            });
+
+            $.ajax(
+                {
+                    type: 'GET',
+                    url: 'https://localhost:44382/api/Restaurant/GetCat/?mail=' + span.innerText,
+                    success: function (cats) {
+                        $.each(cats, function (i, cat) {
+                            $('#categoryTable').append("<tr id=" + cat.Id + "><td><label style='display:none'>" + cat.Id + "</label></td>" + "<td>" + cat.CategoryName + "</td>" + "<td><a class='glyphicon glyphicon-pencil' id='updateCat'></a> </td>" + "</tr>");
+                            $('#itemcategory').append("<option>" + cat.CategoryName + "</option>");
+                        })
+                    }
+                });
+            $.ajax(
+                {
+                    type: 'GET',
+                    url: 'https://localhost:44382/api/Restaurant/GetItems/?mail=' + span.innerText,
+                    success: function (items) {
+                        $.each(items, function (i, item) {
+                            $('#itemTable').append("<tr id=" + item.Id + "><td><label style='display:none'>" + item.Id + "</label></td>" + "<td>" + item.ItemCategory + "</td>" + "<td>" + item.ItemName + "</td>" + "<td>" + item.ItemPrice + " $</td>" + "<td><a class='glyphicon glyphicon-pencil' id='updateItem'></a> </td>" + "</tr>");
+
+                        })
+                    }
+                });
+
+           // var xhttp = new XMLHttpRequest();
+           // xhttp.onreadystatechange = function () {
+           //     if (this.readyState == 4 && this.status == 200) {
+           //         var data = JSON.parse(this.responseText);
+           //         console.log(data);
+           //         var html;
+           //         for (var a = 0; a < data.length; a++) {
+           //             var id = data[a].Id;
+           //             var name = data[a].ProcessName;
+           //             var date = data[a].ProcessDate;
+           //             var status = data[a].ProcessStatus;
+           //             html += "<tr id=" + id + "><td><label style='display:none'>" + id + "</label></td>" + "<td>" + name + "</td>" + "<td>" + date + "</td>" + "<td>" +status+ " </td>" + "<td><a class='glyphicon glyphicon-pencil' id='updateProcess'></a> </td>" + "</tr>";
+           //         }
+           //         document.getElementById('BillTable').innerHTML += html;
+           //     }
+           // };
+           // xhttp.open("GET", "https://localhost:44382/api/Restaurant/GetProcess/?mail=" + span.innerText, true);
+           // xhttp.send();
+
+
+            $.ajax(
+                {
+                    type: 'GET',
+                    url: 'https://localhost:44382/api/Restaurant/GetProcess/?mail=' + span.innerText,
+                    success: function (items) {
+                       $.each(items, function (i, item) {
+                            $('#BillTable').append("<tr id=" + item.Id + "><td><label style='display:none'>" + item.Id + "</label></td>" + "<td>" + item.ProcessName + "</td>" + "<td>" + item.ProcessDate + "</td>" + "<td>" + item.ProcessStatus + " </td>" + "<td><a class='glyphicon glyphicon-pencil' id='updateProcess'></a> </td>" + "</tr>");
+
+
+                        })
+                  }
+               });
+
+
+
+
+            $('#tablesTable').on('click', '#updateTable', function () {
+                var row = $(this).closest('tr');
+                var tableID = row.find("td:eq(0)").text();
+                var tablename = row.find("td:eq(1)").text();
+                var seatnumber = row.find("td:eq(2)").text();
+                $('#tableid').text(tableID);
+                $('#tablename').val(tablename);
+                var seatNumber = seatnumber.split(" ");
+                $('#seatnumber').val(seatNumber[0]);
+            })
+            $('#BillTable').on('click', '#updateProcess', function () {
+                var row = $(this).closest('tr');
+                var processID = row.find("td:eq(0)").text();
+                var processName = row.find("td:eq(1)").text();
+                var processDate = row.find("td:eq(2)").text();
+                var processStatus = row.find("td:eq(3)").text();
+                var price = processStatus.split(" ");
+                $('#processid').text(processID);
+                $('#bill').val(processName);
+                $('#PaymentDate').val(processDate);
+                $('#PaymentStatus').val(price[0]);
+            })
+            $('#categoryTable').on('click', '#updateCat', function () {
+                var row = $(this).closest('tr');
+                var catID = row.find("td:eq(0)").text();
+                var catName = row.find("td:eq(1)").text();
+                $('#categoryid').text(catID);
+                $('#categoryname').val(catName);
+            })
+            $('#itemTable').on('click', '#updateItem', function () {
+                var row = $(this).closest('tr');
+                var itemID = row.find("td:eq(0)").text();
+                var itemCategory = row.find("td:eq(1)").text();
+                var itemName = row.find("td:eq(2)").text();
+                var itemPrice = row.find("td:eq(3)").text();
+                var price = itemPrice.split(" ");
+                $('#itemid').text(itemID);
+                $('#itemcategory').val(itemCategory);
+                $('#itemname').val(itemName);
+                $('#itemprice').val(price[0]);
+            })
+
+
+            $("#AddBill").click(function () {
+                var ProcessName = document.getElementById("bill").value;
+                var ProcessDate = document.getElementById("PaymentDate").value;
+                var PaymentStatus = document.getElementById("PaymentStatus").value;
+
+                if (ProcessName === '') {
+                    alert("Please type fields!!")
+                }
+                else {
+                    $.ajax({
+                        url: 'https://localhost:44382/api/restaurant/process',
+                        method: 'POST',
+                        data: {
+                            RestaurantMail: span.innerText,
+                            ProcessName: ProcessName,
+                            ProcessDate: ProcessDate,
+                            ProcessStatus: PaymentStatus,
+                        },
+                        success: function (item) {
+                           $('#BillTable').append("<tr id=" + item.Id + "><td><label style='display:none'>" + item.Id + "</label></td>" + "<td>" + item.ProcessName + "</td>" + "<td>" + item.ProcessDate + "</td>" + "<td>" + item.ProcessStatus + " </td>" + "<td><a class='glyphicon glyphicon-pencil' id='updateProcess'></a> </td>" + "</tr>");
+                        }
+                    });
+                }
+            })
+            $('#updateprocess').click(function () {
+                var processID = $('#processid').text();
+                var ProcessName = document.getElementById("bill").value;
+                var ProcessDate = document.getElementById("PaymentDate").value;
+                var PaymentStatus = document.getElementById("PaymentStatus").value;
+                if (ProcessName == '') {
+                    alert("Please type fields!!")
+                }
+                else {
+                    document.getElementById('itemname').value = '';
+
+                    $.ajax({
+                        url: 'https://localhost:44382/api/Restaurant/UpdateProcess/?id=' + processID,
+                        method: 'PUT',
+                        data: {
+                            RestaurantMail: span.innerText,
+                            ProcessName: ProcessName,
+                            ProcessDate: ProcessDate,
+                            ProcessStatus: PaymentStatus,
+
+                        },
+                        success: function (item) {
+                            $('#' + processID).remove();
+                            $('#BillTable').append("<tr id=" + item.Id + "><td><label style='display:none'>" + item.Id + "</label></td>" + "<td>" + item.ProcessName + "</td>" + "<td>" + item.ProcessDate + "</td>" + "<td>" + item.ProcessStatus + " </td>" + "<td><a class='glyphicon glyphicon-pencil' id='updateProcess'></a> </td>" + "</tr>");
+
+
+                        }
+                    })
+
+                }
+            })
+            $('#deleteprocess').click(function () {
+                var processID = $('#processid').text();
+                var ProcessName = document.getElementById("bill").value;
+                if (ProcessName == '') {
+                    alert("Please type fields!!")
+                }
+                else {
+                    document.getElementById('bill').value = '';
+                    document.getElementById('PaymentDate').value = '';
+                    document.getElementById("PaymentStatus").value='';
+                    $.ajax({
+                        url: 'https://localhost:44382/api/Restaurant/DeleteProcess/?id=' + processID,
+                        method: 'DELETE',
+                        success: function () {
+                            $('#' + processID).remove();
+                        },
+                    })
+                }
+
+            })
+            $("#additem").click(function () {
+                var itemCategory = document.getElementById("itemcategory").value;
+                var itemName = document.getElementById("itemname").value;
+                var itemPrice = document.getElementById("itemprice").value;
+                if (itemCategory === '') {
+                    alert("Please type fields!!")
+                }
+                else {
+                    $.ajax({
+                        url: 'https://localhost:44382/api/Restaurant/Item',
+                        method: 'POST',
+                        data: {
+                            RestaurantMail: span.innerText,
+                            ItemCategory: itemCategory,
+                            ItemName: itemName,
+                            ItemPrice: itemPrice,
+                        },
+                        success: function (item) {
+                            $('#itemTable').append("<tr id=" + item.Id + "><td><label style='display:none'>" + item.Id + "</label></td>" + "<td>" + item.ItemCategory + "</td>" + "<td>" + item.ItemName + "</td>" + "<td>" + item.ItemPrice + " $</td>" + "<td><a class='glyphicon glyphicon-pencil' id='updateItem'></a> </td>" + "</tr>");
+                        }
+                    });
+                }
+
+            })
+            $('#updateitem').click(function () {
+                var itemID = $('#itemid').text();
+                var itemName = document.getElementById("itemname").value;
+                var itemCategory = document.getElementById("itemcategory").value;
+                var itemPrice = document.getElementById("itemprice").value;
+                if (itemName == '') {
+                    alert("Please type fields!!")
+                }
+                else {
+                    document.getElementById('itemname').value = '';
+
+                    $.ajax({
+                        url: 'https://localhost:44382/api/Restaurant/UpdateItems/?id=' + itemID,
+                        method: 'PUT',
+                        data: {
+                            RestaurantMail: span.innerText,
+                            ItemCategory: itemCategory,
+                            ItemName: itemName,
+                            ItemPrice: itemPrice,
+
+                        },
+                        success: function (item) {
+                            $('#' + itemID).remove();
+                            $('#itemTable').append("<tr id=" + item.Id + "><td><label style='display:none'>" + item.Id + "</label></td>" + "<td>" + item.ItemCategory + "</td>" + "<td>" + item.ItemName + "</td>" + "<td>" + item.ItemPrice + " $</td>" + "<td><a class='glyphicon glyphicon-pencil' id='updateItem'></a> </td>" + "</tr>");
+
+
+                        }
+                    })
+
+                }
+            })
+            $('#deleteitem').click(function () {
+                var itemID = $('#itemid').text();
+                var itemName = document.getElementById("itemname").value;
+                if (itemName == '') {
+                    alert("Please type fields!!")
+                }
+                else {
+                    document.getElementById('itemname').value = '';
+                    document.getElementById('itemprice').value = '';
+                    $.ajax({
+                        url: 'https://localhost:44382/api/Restaurant/DeleteItems/?id=' + itemID,
+                        method: 'DELETE',
+                        success: function () {
+                            $('#' + itemID).remove();
+                        },
+                    })
+                }
+
+            })
+            $('#addcategory').click(function () {
+                var categoryname = document.getElementById('categoryname').value;
+                if (categoryname == '') {
+                    alert("Please type fields!!")
+                }
+                else {
+                    document.getElementById('categoryname').value = '';
+                    $.ajax({
+                        url: 'https://localhost:44382/api/restaurant/category',
+                        method: 'POST',
+                        data: {
+                            RestaurantMail: span.innerText,
+                            CategoryName: categoryname,
+                        },
+                        success: function (newCat) {
+                            $('#categoryTable').append("<tr id=" + newCat.Id + "><td><label style='display:none'>" + newCat.Id + "</label></td>" + "<td>" + newCat.CategoryName + "</td >" + "<td><a class='glyphicon glyphicon-pencil' id='updateTable'></a> </td>" + "</tr>");
+                            $('#itemcategory').append("<option>" + newCat.CategoryName + "</option>");
+                        }
+                    })
+                }
+            })
+
+            $('#updatecategory').click(function () {
+                var catID = $('#categoryid').text();
+                var catName = document.getElementById("categoryname").value;
+                if (catName == '') {
+                    alert("Please type fields!!")
+                }
+                else {
+                    document.getElementById('categoryname').value = '';
+
+                    $.ajax({
+                        url: 'https://localhost:44382/api/Restaurant/UpdateCategory/?id=' + catID,
+                        method: 'PUT',
+                        data: {
+                            RestaurantMail: span.innerText,
+                            CategoryName: catName,
+
+                        },
+                        success: function (newCat) {
+                            $('#' + catID).remove();
+                            $('#categoryTable').append("<tr id=" + newCat.Id + "><td><label style='display:none'>" + newCat.Id + "</label></td>" + "<td>" + newCat.CategoryName + "</td >" + "<td><a class='glyphicon glyphicon-pencil' id='updateTable'></a> </td>" + "</tr>");
+
+
+                        }
+                    })
+
+                }
+            })
+            $('#deletecategory').click(function () {
+                var catID = $('#categoryid').text();
+                var catname = document.getElementById('categoryname').value;
+                if (catname == '') {
+                    alert("Please type fields!!")
+                }
+                else {
+                    document.getElementById('categoryname').value = '';
+                    $.ajax({
+                        url: 'https://localhost:44382/api/Restaurant/DeleteCategory/?id=' + catID,
+                        method: 'DELETE',
+                        success: function () {
+                            $('#' + catID).remove();
+                        },
+                    })
+                }
+
+            })
+            $("#addtable").click(function () {
+                var tablename = document.getElementById("tablename").value;
+                var seatnumber = document.getElementById("seatnumber").value;
+                var booking = document.getElementById("booking").value;
+                if (tablename === '') {
+                    alert("Please type fields!!")
+                }
+                else {
+                    document.getElementById("tablename").value = '';
+                    document.getElementById("seatnumber").value = '';
+                    $.ajax({
+                        url: 'https://localhost:44382/api/restaurant/table',
+                        method: 'POST',
+                        data: {
+                            RestaurantMail: span.innerText,
+                            TableName: tablename,
+                            TableSeatNumber: seatnumber,
+                            TableBooking: booking,
+                        },
+                        success: function (newTable) {
+                            $('#tablesTable').append("<tr id=" + newTable.Id + "><td><label style='display:none'>" + newTable.Id + "</label></td>" + "<td>" + newTable.TableName + "</td>" + "<td>" + newTable.TableSeatNumber + " Person</td>" + "<td>" + newTable.TableBooking + "</td>" + "<td><a class='glyphicon glyphicon-pencil' id='updateTable'></a></td>" + "</tr>");
+                        }
+                    });
+                }
+            })
+
+            $('#updatetable').click(function () {
+                var tableid = $('#tableid').text();
+
+                var tablename = document.getElementById("tablename").value;
+                var seatnumber = document.getElementById("seatnumber").value;
+                var booking = document.getElementById("booking").value;
+                if (tablename == '') {
+                    alert("Please type fields!!")
+                }
+                else {
+                    document.getElementById('tablename').value = '';
+                    document.getElementById('seatnumber').value = '';
+                    $.ajax({
+                        url: 'https://localhost:44382/api/Restaurant/UpdateTables/?id=' + tableid,
+                        method: 'PUT',
+                        data: {
+                            RestaurantMail: span.innerText,
+                            TableName: tablename,
+                            TableSeatNumber: seatnumber,
+                            TableBooking: booking
+                        },
+                        success: function (newTable) {
+                            $('#' + tableid).remove();
+                            $('#tablesTable').append("<tr id=" + newTable.Id + "><td><label style='display:none'>" + newTable.Id + "</label></td><td>" + newTable.TableName + "</td>" + "<td>" + newTable.TableSeatNumber + " Person</td>" + "<td>" + newTable.TableBooking + " </td>" + "<td><a class='glyphicon glyphicon-pencil' id='updateTable'></a> </td>" + "</tr>");
+
+                        }
+                    })
+
+                }
+            })
+
+            $('#deletetable').click(function () {
+                var tableid = $('#tableid').text();
+                console.log(tableid);
+                var tablename = document.getElementById('tablename').value;
+                var seatnumber = document.getElementById("seatnumber").value;
+                var booking = document.getElementById("booking").value;
+                if (tablename == '') {
+                    alert("Please type fields!!")
+                }
+                else {
+                    document.getElementById('tablename').value = '';
+                    document.getElementById('seatnumber').value = '';
+
+                    $.ajax({
+                        url: 'https://localhost:44382/api/Restaurant/DeleteTables/?id=' + tableid,
+                        method: 'DELETE',
+                        success: function () {
+                            $('#' + tableid).remove();
+                        },
+                    })
+                }
+
+            })
+
+            $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+                localStorage.setItem('activeTab', $(e.target).attr('href'));
+            });
+            var activeTab = localStorage.getItem('activeTab');
+            if (activeTab) {
+                $('#sidebar a[href="' + activeTab + '"]').tab('show');
+            }
+            $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+                localStorage.setItem('activeTab', $(e.target).attr('href'));
+            });
+            var activeTab = localStorage.getItem('activeTab');
+            if (activeTab) {
+                $('#settings a[href="' + activeTab + '"]').tab('show');
+            }
+        });
+        var resultArr = [];
+        var results = []
+        $(document).ready(function () {
+            $.ajax({
+                type: 'GET',
+                url: 'https://localhost:44382/api/restaurant/graph/daily',
+                success: function (items) {
+
+                    var dateArr = [];
+                    results.push(['TableName', 'Price'])
+
+                    $.each(items, function () {
+                        // Easiest way to get your required date format
+                        var date = new Date(this.Date).toISOString().replace(/T/, ' ').split(' ')[0];
+                        var index = dateArr.indexOf(date);
+                        if (index == -1) {
+                            dateArr.push(date);
+                            var obj = [date, parseInt(this.Price)];
+                            resultArr.push(obj);
+                        }
+                        else {
+                            resultArr[index][1] += parseInt(this.Price);
+                        }
+                    });
+
+                    var temp = {};
+                    items.map(function (item) {
+                        temp[item.TableName] = (temp[item.TableName] || 0) + parseInt(item.Price);
+                    })
+
+                    Object.keys(temp).forEach(function (key) {
+                        results.push([key, temp[key]]);
+                    })
+
+
+                    resultArr.push(['Date', 'Total'])
+
+                    console.log(results);
+                }
+            })
+        });
+
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        // Draw the chart and set the chart values
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable(results);
+
+            // Optional; add a title and set the width and height of the chart
+            var options = { 'title': 'Popular Tables', 'width': 500, 'height': 400 };
+
+            // Display the chart inside the <div> element with id="piechart"
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+            chart.draw(data, options);
+        }
+        google.charts.setOnLoadCallback(drawPieChart);
+
+        // Draw the chart and set the chart values
+        function drawPieChart() {
+
+
+            var data = new google.visualization.arrayToDataTable(resultArr.reverse());
+
+
+            // Optional; add a title and set the width and height of the chart
+            var options = { 'title': 'Daily Income Graph', 'width': 500, 'height': 400 };
+
+            // Display the chart inside the <div> element with id="piechart"
+            var chart = new google.visualization.LineChart(document.getElementById('linechart'));
+            chart.draw(data, options);
+        }
+    </script>
+</body>
+</html>

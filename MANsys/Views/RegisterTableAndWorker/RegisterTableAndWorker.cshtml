@@ -1,0 +1,230 @@
+﻿@model MANsys.Models.Categories
+
+@{
+    ViewBag.Title = "Register Table and Worker";
+}
+
+<html>
+<head>
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <link href="~/Content/RegisterTableWorker.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+    <h1>Welcome <span id="RestMail">@Request.Cookies["RestMail"].Value.ToString()</span></h1>
+    
+    <h3>Step 2: Please fill restaurant materials.</h3>
+    <input id="completedBtn" type="button" class="btn btn-success" value="Completed!" />
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10">
+                <div style="position:relative;padding:10px">
+                    <ul class="nav" role="tablist" id="myTab">
+                        <li class="nav-item col-md-4">
+                            <a class="navbar-link" id="TableReg1" data-toggle="tab" href="#CategoryPane">Create Categories</a>
+                        </li>
+                        <li class="nav-item col-md-4">
+                            <a class="navbar-link" id="TableReg2" data-toggle="tab" href="#MenuPane">Create Menu</a>
+                        </li>
+                        <li class="nav-item col-md-4">
+                            <a class="navbar-link" id="TableReg3" data-toggle="tab" href="#TablePane">Add Table</a>
+                        </li>
+                    </ul>
+                </div>              
+                <div class="tab-content">
+                        <div class="tab-pane fade in active" role="tabpanel" id="CategoryPane">
+                            <table id="CategoryTable" class="table" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <th><p> Category Name:</p></th>
+                                    <th id="CatInput"><input id="catname" name="catname" type="text" class="form-control" placeholder="Type here" /></th>
+                                    <th id="CatBtn"><input id="addCategory" class="btn btn-primary btn-sm" value="Add" type="button" /> </th>
+                                </tr>
+                            </table>
+                            <table id="catTable">
+                            </table>
+                        </div>
+                    <div class="tab-pane fade" role="tabpanel" id="MenuPane">
+                        <table id="ItemTable" class="table" cellspacing="0">
+                            <tr>
+                                <th id="ItemCat">
+                                    <select class="selectpicker" id="itemcategory">
+                                        <option value="" disabled selected>Choose Category..</option>
+                                    </select>
+                                </th>
+                                <th id="ItemName"><input id="itemname" type="text" class="form-control" placeholder="Name" /></th>
+                                <th id="ItemPrice"><input id="itemprice" type="text" class="form-control" placeholder="Price" /></th>
+                                <th id="ItemBtn"><input id="additem" class="btn btn-primary btn-sm" value="Add" type="button" /> </th>
+                            </tr>
+                        </table>
+                        <table id="itemTable">
+                            <tr>
+                                <th>Item Category</th>
+                                <th>Item Name</th>
+                                <th>Item Price</th>
+                            </tr>
+                            
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" role="tabpanel" id="TablePane">
+                        <table id="RestTable" class="table" cellspacing="0">
+                            <tr>
+                                <th id="TableName"><input id="tablename" type="text" class="form-control" placeholder="Table Name" /></th>
+                                <th id="SeatNumber"><input id="seatnumber" type="text" class="form-control" placeholder="Number of Seat" /></th>
+                                <th id="SeatBooking">
+                                    <select class="selectpicker" id="booking">
+                                        <option>Free</option>
+                                        <option>Reserv</option> x""
+                                    </select>
+                                </th>
+                                <th id="tableBtn"><input id="addtable" class="btn btn-primary btn-sm" value="Add" type="button" /> </th>
+                            </tr>
+                        </table>
+                        <table id="restaurantTable">
+                            <tr>
+                                <th>Table Name</th>
+                                <th>Number of Seat</th>
+                                <th>Booking</th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            var span = document.getElementById("RestMail");
+
+            $.ajax(
+                {
+                    type: 'GET',
+                    url: 'https://localhost:44382/api/Restaurant/GetCat/?mail=' + span.innerText,
+                    success: function (category) {
+                        $.each(category, function (i, cat) {
+                            $('#catTable').append("<tr><td>" + cat.CategoryName + "</td></tr>");
+                            $('#itemcategory').append("<option>" + cat.CategoryName + "</option>");
+                        })
+                    }
+                });
+            
+            $.ajax(
+                {
+                    type: 'GET',
+                    url: 'https://localhost:44382/api/Restaurant/GetTables/?mail=' + span.innerText,
+                    success: function (tables) {
+                        $.each(tables, function (i, table) {
+                            $('#restaurantTable').append("<tr><td>" + table.TableName + "</td>" + "<td>" + table.TableSeatNumber + " Person</td>" + "<td>" + table.TableBooking + "</td></tr>");
+                        })
+                    }
+                });
+            $.ajax(
+                {
+                    type: 'GET',
+                    url: 'https://localhost:44382/api/Restaurant/GetItems/?mail=' + span.innerText,
+                    success: function (items) {
+                        $.each(items, function (i, item) {
+                            $('#itemTable').append("<tr><td>" + item.ItemCategory + "</td>" + "<td>" + item.ItemName + "</td>" + "<td>" + item.itemPrice + "$</td></tr>");
+                        })
+                    }
+                });
+            $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+                localStorage.setItem('activeTab', $(e.target).attr('href'));
+                });
+                var activeTab = localStorage.getItem('activeTab');
+                if(activeTab){
+                $('#myTab a[href="' + activeTab + '"]').tab('show');
+            }
+
+            $("#additem").click(function () {         
+                        var span = document.getElementById("RestMail");
+                        var itemCategory = document.getElementById("itemcategory").value;
+                        var itemName = document.getElementById("itemname").value;
+                        var itemPrice = document.getElementById("itemprice").value;
+                        if (itemCategory === '') {
+                            alert("Please type fields!!")
+                        }
+                        else {
+                            $.ajax({
+                                url: 'https://localhost:44382/api/Restaurant/Item',
+                                method: 'POST',
+                                data: {
+                                    RestaurantMail: span.innerText,
+                                    ItemCategory:itemCategory,
+                                    ItemName: itemName,
+                                    ItemPrice:itemPrice
+                                },
+                                success: function (newTable) {
+                                    $('#itemTable').append("<tr><td>" + newTable.ItemCategory + "</td>" + "<td>" + newTable.ItemName + " Person</td>" + "<td>" + newTable.ItemPrice + "</td></tr>");
+                                }
+                            });
+                         }
+                         
+                    })
+            $("#addtable").click(function () {
+                        var span = document.getElementById("RestMail");
+                        var tablename = document.getElementById("tablename").value;
+                        var seatnumber = document.getElementById("seatnumber").value;
+                        var booking = document.getElementById("booking").value;
+                        var span = document.getElementById("RestMail");
+                        if (tablename === '') {
+                            alert("Please type fields!!")
+                        }
+                        else {
+                            
+                            document.getElementById("tablename").value = '';
+                            document.getElementById("seatnumber").value = '';
+                            $.ajax({
+                                url: 'https://localhost:44382/api/restaurant/table',
+                                method: 'POST',
+                                data: {
+                                    RestaurantMail: span.innerText,
+                                    TableName: tablename,
+                                    TableSeatNumber: seatnumber,
+                                    TableBooking: booking,
+                                },
+                                success: function (newTable) {
+                                    $('#restaurantTable').append("<tr><td>" + newTable.TableName + "</td>" + "<td>" + newTable.TableSeatNumber + " Person</td>" + "<td>" + newTable.TableBooking + "</td></tr>");
+                                }
+                            });
+                            
+                            
+                        }
+                        
+                        
+                    })
+                    $('#addCategory').click(function () {
+                        
+                        var name = document.getElementById("catname").value;
+                        var span = document.getElementById("RestMail");
+                        if (name === '') {
+                            alert("Please type category!!");
+                        }
+                        else {
+                            document.getElementById("catname").value = '';
+                            $.ajax({
+                            url: 'https://localhost:44382/api/restaurant/category',
+                            method: 'POST',
+                            data: {
+                                CategoryName: name,
+                                RestaurantMail: span.innerText,
+                                },
+                                success: function (newCAT) {
+                                    $('#catTable').append("<tr><td>" + newCAT.CategoryName + "</td></tr>");
+                                    $('#itemcategory').append("<option>" + newCAT.CategoryName + "</option>");
+                                }
+                            });
+                           
+                        }
+                        
+                    });
+                    $('#loginBtn').click(function () {
+                        window.location.href = "@Url.Action("LoginPage")";
+                    })
+                    $('#completedBtn').click(function () {
+                        document.location = "@Url.Action("Login","Account")";
+                            })
+                        })
+    </script>
+</body>
+</html>

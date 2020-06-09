@@ -1,0 +1,97 @@
+﻿@model MANsys.Models.Accounts
+@{
+    ViewBag.Title = "Restaurant Register";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <link href="~/Content/StyleSheet.css" rel="stylesheet" type="text/css" />
+</head>
+
+
+<body>
+    <div class="container register">
+        <div class="row">
+            <div class="col-md-3 register-left">
+                <a href="@Url.Action("CustomerSide", "Home")">
+                    <img src="~/Image/iconfinder (1).png" /></a>
+                    <h3>Welcome</h3>
+                    <p>You are 30 seconds away from earning your own money!</p>
+                    <input id="redirect" type="submit" value="Login" />
+                    <br />
+</div>
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <div class="col-md-9 register-right">
+                    <h3 class="register-heading">Apply as a Restaurant</h3>
+                    <div class="tab-content">
+                        <div class="row register-form">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="text" id="RestaurantName" name="RestaurantName" class="form-control" placeholder="Restaurant Name *" value="" required />
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="RestaurantMail" name="RestaurantMail" class="form-control" placeholder="Restaurant Mail *" value="" required />
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" id="RestaurantPassword" name="RestaurantPassword" class="form-control" placeholder="Password *" value="" required />
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control" placeholder="Confirm Password *" value="" required />
+                                    <span id='message'></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="text" id="RestaurantPhone" name="RestaurantPhone" class="form-control" placeholder="Restraurant Phone *" value="" required />
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" minlength="4" name="RestaurantAdress" id="RestaurantAddress" class="form-control" placeholder="Restaurant Address *" value="" required />
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" minlength="4" name="RestaurantDistrict" id="RestaurantDistrict" class="form-control" placeholder="Restaurant District *" value="" required />
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" minlength="4" name="RestaurantCity" id="RestaurantCity" class="form-control" placeholder="Restaurant City *" value="" required />
+                                </div>
+                                <div>
+                                    <input type="submit" class="btnRegister" id="btnRegister" value="Register" />
+                                </div>
+                            </div>
+                            @ViewBag.Message
+                            @Html.ValidationSummary()
+                        </div>
+                    </div>
+                </div>
+
+
+            }
+        </div>
+        <script>
+        $(function(){
+          $("#redirect").click(function (e) {
+             e.preventDefault();
+             document.location = '@Url.Action("Login", "Account")';
+            });
+        });
+        $('#RestaurantPassword, #ConfirmPassword').on('keyup', function () {
+            if ($('#RestaurantPassword').val() == $('#ConfirmPassword').val()) {
+                $('#message').html('Matching').css('color', 'green');
+            } else
+                $('#message').html('Not Matching').css('color', 'red');
+        });
+
+            
+        </script>
+
+    </div>
+</body>
+
+</html>

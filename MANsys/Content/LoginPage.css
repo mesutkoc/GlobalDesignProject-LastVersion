@@ -1,0 +1,63 @@
+﻿body {
+    font-family: "Lato", sans-serif;
+   
+}
+.row{
+    position:fixed;
+    margin-left:-5%;
+    margin-top:10%;
+}
+.sidenav {  
+    height:250px;
+    background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+    overflow-x: hidden;
+    width: 30%;
+    z-index: 1;
+    border-top-left-radius: 10% 50%;
+    border-bottom-left-radius: 10% 50%;
+    margin-left:20%;
+    position:fixed;
+}
+
+.col-sm-12 {    
+    margin-top: 10%;
+}
+
+.main {
+    height: 250px;
+    width: 35%;
+    padding: 0px 10px;
+    margin-left: 52%;
+    border-top-right-radius: 10% 50%;
+    border-bottom-right-radius: 10% 50%;
+    border: 2px solid;
+    position:fixed;
+}
+
+
+.login-form {
+    padding-left: 6px;
+}
+
+.login-left img {
+    margin-top: 5%;
+    margin-left: 35%;
+    width: 30%;
+    -webkit-animation: mover 2s infinite alternate;
+    animation: mover 1s infinite alternate;
+}
+
+.sidenav #h1 {
+    margin-left: 31%;
+    color: #fff;
+}
+
+.form-group label {
+    font-size: 20px;
+}
+
+.col-sm-3 button {
+    border-radius: 10% 90% 90% 10%;
+    height: 150px;
+    margin-left: -20px;
+}

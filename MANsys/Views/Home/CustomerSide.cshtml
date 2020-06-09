@@ -1,0 +1,244 @@
+﻿
+@{
+    ViewBag.Title = "CustomerSide";
+}
+<html>
+<head>
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+    <section>
+        <div style="background-image: url('../../Image/asd.png');background-repeat:no-repeat;width:100%;height:770px;margin-top:-50px">
+        </div>
+        <div style="position:absolute;top:2%;left:4%">
+            <img src="~/Image/iconfinder(2).png" width="50" class="mr-3 img-thumbnail shadow-sm" />
+        </div>
+        <h1 style="position:absolute;top:0%;left:8%;color:white;font-weight:500;font-size:4rem">FOODVENDOR</h1>
+        <h1 style="position:absolute;top:30%;left:31%;font-size:60px;color:white;font-weight:900">Ministry of Lunch</h1>
+        <div class="nav">
+            <input type="button" class="btn" id="callIndex" value="Apply as a Restaurant" style="position: absolute;
+        left: 80%;
+        top: 2%;
+        color: red;
+        background-color: white;
+        font-size: 20px;
+        border-color: red">
+        </div>
+        <div class="form-inline" style="position: absolute;width:800px;top:45%;left:38%">
+            <div class="form-group">
+                <input class="data-list-input" id="RestaurantName" placeholder="Restaurant Name" style="width:30rem;height:4rem;" list="browsers" name="myBrowser" />
+                <datalist id="browsers">
+                </datalist>
+            </div>
+            <div class="form-group">
+                <input type="button" class="btn btn-danger" value="Search" style="height:4rem" id="SearchRestaurant" />
+            </div>
+        </div>
+    </section>
+    <section style="margin-top:5%" id="second">
+        <div class="container tab-pane" id="itemPane">
+
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-top:10%;margin-left:20%">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" style="width:35rem;">
+                    <div class="modal-header text-center">
+                        <h4 class="modal-title w-100 font-weight-bold" id="reservationTableName"></h4>
+                        <h4 class="modal-title w-100 font-weight-bold">Reservation</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body mx-3">
+                        <div class="md-form mb-5">
+                            <i class="fas fa-user prefix grey-text"></i>
+                            <input type="text" id="name" class="form-control validate" placeholder="Name Surname">
+                        </div>
+                        <div class="md-form mb-5" style="margin-top:7px;">
+                            <i class="fas fa-envelope prefix grey-text"></i>
+                            <input type="email" id="mail" class="form-control validate" placeholder="Mail">
+                        </div>
+                        <div class="md-form mb-5" style="margin-top:7px;">
+                            <i class="fas fa-envelope prefix grey-text"></i>
+                            <input type="tel" id="phoneNumber" class="form-control validate">
+                        </div>
+                        <div class="md-form mb-5" style="margin-top:7px;">
+                            <i class="fas fa-envelope prefix grey-text"></i>
+                            <input type="date" id="localdate" class="form-control validate" required>
+
+                        </div>
+                        <div class="md-form mb-5" style="margin-top:7px;">
+                            <i class="fas fa-envelope prefix grey-text"></i>
+                            <input class="data-list-input" id="times" placeholder="Choose Time" style="width:30rem;height:4rem;" list="time" name="myTime" />
+                            <datalist id="time">
+                                <option>09:00</option>
+                                <option>10:00</option>
+                                <option>11:00</option>
+                                <option>12:00</option>
+                                <option>13:00</option>
+                                <option>14:00</option>
+                                <option>15:00</option>
+                                <option>16:00</option>
+                                <option>17:00</option>
+                                <option>18:00</option>
+                                <option>19:00</option>
+                                <option>20:00</option>
+                            </datalist>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button class="btn btn-unique" id="sendReservation">Send <i class="fas fa-paper-plane-o ml-1"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                $("#callIndex").click(function (e) {
+                    e.preventDefault();
+                    document.location = '@Url.Action("Index", "Home")';
+                });
+            });
+            $.ajax(
+                {
+                    type: 'GET',
+                    url: 'https://localhost:44382/api/restaurant/getall',
+                    success: function (data) {
+                        $.each(data, function (i, item) {
+                            $('#browsers').append('<option>' + item.RestaurantName + '</option>');
+                        })
+                    }
+                });
+            $('#itemPane').on('click', '#reservs', function () {
+                document.getElementById("reservationTableName").innerHTML = "";
+                var row = $(this).closest('tr');
+                var tableName = row.find("td:eq(0)").text();
+                $('#reservationTableName').append(tableName);
+            })
+
+
+
+            $("#SearchRestaurant").click(function () {
+                var name = document.getElementById("RestaurantName").value;
+                var dict = {};
+                $.ajax(
+                    {
+                        type: 'GET',
+                        url: 'https://localhost:44382/api/Restaurant/GetItemsSearch/?restaurantName=' + name,
+                        success: function (data) {
+                            $.ajax(
+                                {
+                                    type: 'GET',
+                                    url: 'https://localhost:44382/api/restaurant/tables/empty?restaurantName=' + name,
+                                    success: function (tables) {
+                                        $('#itemPane').append('<div class="panel panel-default" style="min-width:200px; margin-left:40px;float:left">' +
+                                            '<div class="panel-heading" style="background-color:white;color:red;font-size:2.6rem;text-align:center">' +
+                                            'Free Tables' +
+                                            '</div>' +
+                                            '<div class="panel-body">' +
+                                            '<table id="items1">' +
+                                            '</table>' + '</div>' + '</div>');
+                                        for (var i = 0; i < tables.length; i++) {
+                                            var item = tables[i];
+
+                                            $('#items1').append('<tr>' + '<td>' + item.TableName + '</td>' + '<td style="padding-left:40px">(' + item.TableSeatNumber + ' seat)</td>' + '<td style="padding-left:50px">' + '<a data-toggle="modal" data-target="#myModal" id="reservs" class="pull-right hidden-xs glyphicon glyphicon-calendar"></a>' + '</td>' + '</tr>');
+
+                                        }
+                                    }
+                                });
+                            $('#itemPane').html("");
+                            $.each(data, function (i, item) {
+                                if (item.ItemCategory in dict) {
+                                    dict[item.ItemCategory].push(item.ItemName);
+                                }
+                                else {
+                                    dict[item.ItemCategory] = [item.ItemName]
+                                }
+                            })
+
+                            var result = Object.keys(dict);
+                            for (var i = 0; i < result.length; i++) {
+                                $('#itemPane').append('<div class="panel panel-default" style="min-width:200px; margin-left:40px;float:left">' +
+                                    '<div class="panel-heading" style="background-color:white;color:red;font-size:2.6rem;text-align:center">' +
+                                    Object.keys(dict)[i] +
+                                    '</div>' +
+                                    '<div class="panel-body">' +
+                                    '<ul id="dictAdd"><li>' +
+                                    Object.values(dict)[i]) +
+                                    '</li></ul>' + '</div>' + '</div>';
+                            }
+
+                        }
+                    });
+            });
+
+            $('#sendReservation').click(function () {
+                var cusname = document.getElementById("name").value;
+                var tablename = document.getElementById("reservationTableName");
+                var mail = document.getElementById("mail").value;
+                var number = document.getElementById("phoneNumber").value;
+                var times = document.getElementById("times").value;
+                var date = document.getElementById("localdate").value;
+                var restName = document.getElementById("RestaurantName").value;
+                var newtime = date + " " + times;
+
+                var tablesss = [];
+                $.ajax(
+                    {
+                        type: 'GET',
+                        url: 'https://localhost:44382/api/Restaurant/TimeZone/?tablename=' + tablename.innerText,
+                        success: function (cats) {
+                            tablesss.push(cats);
+                            var list2 = [];
+                            for (var i = 0; i < tablesss[0].length; i++) {
+                                list2.push(tablesss[0][i])
+                            }
+                            if (list2.find((str) => str === newtime)) {
+                                alert("this is not suitable");
+                            }
+                            else {
+                                $.ajax({
+                                    type: 'GET',
+                                    url: 'https://localhost:44382/api/Restaurant/GetMail/?name=' + restName,
+                                    success: function (name) {
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: 'https://localhost:44382/api/Restaurant/CustomerReservation',
+                                            data: {
+                                                CustomerMail: mail,
+                                                CustomerName: cusname,
+                                                CustomerPhoneNumber: number,
+                                                BookingDate: newtime,
+                                                BookingMessage: tablename.innerText,
+                                                RestaurantMail: name[0],
+                                            },
+                                            success: function () {
+
+                                                document.location = '@Url.Action("CustomerSide", "Home")';
+                                            }
+                                        })
+                                    }
+                                });
+
+
+
+                            }
+                        }
+                    });
+
+
+
+
+            });
+
+        });
+    </script>
+</body>
+</html>

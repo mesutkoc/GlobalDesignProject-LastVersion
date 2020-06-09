@@ -1,0 +1,49 @@
+﻿.vertical-nav {
+    min-width: 18rem;
+    width: 18rem;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s;
+    background-color:white;
+}
+.page-content {
+    width: calc(100% - 18rem);
+    margin-left: 18rem;
+    margin-top: 0rem;
+    transition: all 0.4s;
+   
+}
+body {
+    background: #599fd9;
+    background: -webkit-linear-gradient(to right, #599fd9, #c2e59c);
+    background: linear-gradient(to right, #599fd9, #c2e59c);
+    min-height: 100vh;
+    overflow-x: hidden;
+    
+}
+#sidebar.active {
+    margin-left: -18rem;
+}
+
+@media (max-width: 768px) {
+    #sidebar {
+        margin-left: -18rem;
+    }
+
+        #sidebar.active {
+            margin-left: 0;
+        }
+
+    #content {
+        width: 100%;
+        margin: 0;
+    }
+
+    #content.active {
+        margin-left: 18rem;
+        width: calc(100% - 18rem);
+    }
+}

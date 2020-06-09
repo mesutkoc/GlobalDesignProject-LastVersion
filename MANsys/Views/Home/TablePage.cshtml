@@ -1,0 +1,263 @@
+﻿
+@{
+    ViewBag.Title = "TablePage";
+}
+<html>
+<head>
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="~/Content/TablePage.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container" style="width: 1330px;margin-top:0%;">
+        <div class="row bg-primary" style="border-radius:15px 15px 0px 0px; height:10rem">
+            <div class="col-md-1">
+                <a href="@Url.Action("MainPage", "Home")"><img src="~/Image/iconfinder.png" alt="icon" width="100" class="mr-3 img-thumbnail shadow-sm" style="margin-top:1rem" /></a>
+            </div>
+            <div class="col-md-4">
+                <h1 id="RestName"></h1>
+                <p id="Restmail">@User.Identity.Name</p>
+            </div>
+            <div class="col-md-7">
+                <h3 id="result"></h3>
+            </div>
+        </div>
+        <div class="row" style="height: 500px;border: 2px;border-style: solid">
+            <div class="col-md-4" style="height:500px;border:2px;border-style:solid">
+                <div id="tableCategory">
+                    <div><h4 class="text-center">CATEGORIES</h4></div>
+                    <div id="categoryname" class="scrollbar"></div>
+                </div>
+            </div>
+            <div class="col-md-4" style="height:500px;border:2px;border-style:solid">
+                <h4 class="text-center">ITEMS</h4>
+                <div id="itemlist" class="scrollbar"></div>
+            </div>
+            <div class="col-md-4" style="height:500px;border:2px;border-style:solid">
+                <h4 class="text-center">TABLE: <span id="tableName"></span></h4>
+                <table style="margin-left:10px; width:390px">
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Item Price</th>
+                    </tr>
+                </table>
+                <div id="tablelist" class="scrollbar">
+                    <table id="CustomerOrder" style="width:340px">
+                    </table>
+                </div>
+                <button id="digitalRec" type="button" class="btn btn-primary" value="Receipt" data-toggle="modal" data-target="#basicExampleModal" data-backdrop="static" data-keyboard="false" style="width:40rem">Receipt</button>
+            </div>
+        </div>
+        <div class="modal fade right" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-center" id="exampleModalLabel" style="font-weight:600">DIGITAL RECEIPT</h5>
+
+                    </div>
+                    <div class="modal-body text-center">
+                        <table style="margin-left:110px;width:340px">
+                            <tr>
+                                <th style="width:190px">Name</th>
+                                <th style="width:50px">Price</th>
+                                <th style="width:50px">Piece</th>
+                                <th style="width:50px">Total</th>
+                            </tr>
+                        </table>
+                        <div style="margin-left:110px;width:500px">
+                            <table id="itemRec"></table>
+
+                        </div>
+                        <div style="margin-top:5%">
+                            <p id="date" style="font-size:15px"></p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="Print">Check</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    $(document).ready(function () {
+        document.getElementById("result").innerHTML = localStorage.getItem("name");
+        document.getElementById("tableName").innerHTML = localStorage.getItem("name");
+        console.log(localStorage.getItem("name"));
+        var span = document.getElementById("Restmail");
+        var tabName = document.getElementById("tableName");
+        var sum = 0;
+        var today = new Date();
+        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        var dateTime = date + ' ' + time;
+        $.ajax({
+            url: 'https://localhost:44382/api/Restaurant/UpdateCustomerTable/?tablename=' + tabName.innerText,
+            method: 'PUT',
+            data: {
+                TableBooking: 'Reserv'
+            },
+
+        });
+        $.ajax(
+            {
+                type: 'GET',
+                url: 'https://localhost:44382/api/Restaurant/GetCat/?mail=' +'@User.Identity.Name',
+                success: function (cats) {
+                    $.each(cats, function (i, cat) {
+                        $('#categoryname').append('<button type="button" class="btn" style="background-color:#5cb85c;color: white; margin:.5rem;height: 7rem;width:10rem;float:left; border-radius: 12px;">' + cat.CategoryName + '</button>')
+                    })
+                }
+            });
+        $.ajax(
+            {
+                type: 'GET',
+                url: 'https://localhost:44382/api/Restaurant/GetOrder/?mail=' + '@User.Identity.Name' + '&tablename=' + tabName.innerText,
+                success: function (cats) {
+                    $.each(cats, function (i, cat) {
+                        $('#CustomerOrder').append('<tr><td style="width:200px">' + cat.ItemName + '</td>' + '<td style="width:20px" class="price" id="price">' + cat.ItemPrice + ' <span>$</span></td><td class="glyphicon glyphicon-remove" style="width:80px;text-align:right" id="deleteService"></td></tr>');
+                    })
+                }
+            });
+        $.ajax(
+            {
+                type: 'GET',
+                url: 'https://localhost:44382/api/Restaurant/GetName/?mail=' +'@User.Identity.Name',
+                success: function (name) {
+                    document.getElementById('RestName').innerHTML = name;
+                }
+            });
+
+        $('#digitalRec').click(function () {
+            var arrayPrice = [];
+            var dict = {};
+            $.ajax({
+                type: 'GET',
+                url: 'https://localhost:44382/api/Restaurant/GetOrder/?mail=' + '@User.Identity.Name' + '&tablename=' + tabName.innerText,
+                success: function (cats) {
+                    $.each(cats, function (i, cat) {
+                        arrayPrice.push(cat.ItemPrice);
+                        if (cat.ItemName in dict) {
+                            dict[cat.ItemName] = [cat.ItemPrice, Object.values(dict)[Object.keys(dict).indexOf(cat.ItemName)][1] + 1];
+                        }
+                        else { dict[cat.ItemName] = [cat.ItemPrice,1] }
+
+                    })
+                    var result = Object.keys(dict);
+                    for (var i = 0; i < result.length; i++) {
+                        console.log(result[i] + " " + Object.values(dict)[i]);
+                        $('#itemRec').append('<tr><td style="width:200px;text-align:left">' + result[i] + '</td><td style="width:50px;text-align:left">' + Object.values(dict)[i][0] + '</td><td style="width:50px;text-align:left">' + Object.values(dict)[i][1] + '</td><td style="width:50px;text-align:left">' + parseInt(Object.values(dict)[i][0]) * parseInt(Object.values(dict)[i][1]) + ' $</td></tr>');
+                    }
+
+                    
+                    sum = arrayPrice.reduce(function (a, b) {
+                        return a + b;
+                    }, 0);
+                    $('#date').append("Total Amount: " + '<strong style="font-size:20px">' + sum+ " $</strong></br>");
+                    $('#date').append(dateTime);
+
+                }
+
+            })
+
+        });
+        $('#Print').click(function () {
+            $.ajax({
+                method: 'DELETE',
+                url: 'https://localhost:44382/api/Restaurant/CusTableDelete/?tablename=' + tabName.innerText,
+                success: function () {
+                    $.ajax({
+                        url: 'https://localhost:44382/api/Restaurant/UpdateCustomerTable/?tablename=' + tabName.innerText,
+                        method: 'PUT',
+                        data: {
+                            TableBooking: 'Free'
+                        },
+                        success: function () {
+                            document.location = '@Url.Action("MainPage", "Home")';
+                        }
+                    });
+                },
+            })
+            $.ajax({
+                type: 'POST',
+                url: 'https://localhost:44382/api/restaurant/income',
+                data: {
+                    RestaurantMail: span.innerText,
+                    TableName: tabName.innerText,
+                    Price: sum,
+                    Date: date,
+                }
+            })
+
+        })
+
+        $('#close').click(function () {
+            document.getElementById('itemRec').innerHTML = "";
+            document.getElementById('date').innerHTML = "";
+
+        })
+
+        $('#categoryname').click(function (event) {
+            var catname = $(event.target).text();
+            $.ajax({
+                type: 'GET',
+                url: 'https://localhost:44382/api/Restaurant/GetService/?mail=' + '@User.Identity.Name' + '&cat=' + catname,
+                success: function (items) {
+                    $("#itemlist").empty();
+                    $.each(items, function (i, item) {
+                        $('#itemlist').append('<button type="button" class="btn" style="background-color:#5cb85c;color: white; margin:.5rem;height: 7rem;min-width:7rem;float:left; border-radius: 12px;">' + item.ItemName + '</button>')
+                    })
+                }
+            })
+        });
+
+        $('#itemlist').click(function (event){
+            var itemname = $(event.target).text();
+            console.log(itemname);
+            console.log(tabName.innerText);
+           $.ajax({
+               type: 'GET',
+               url: 'https://localhost:44382/api/Restaurant/GetCustomerItem/?mail=' + '@User.Identity.Name' + '&name=' + itemname,
+               success: function (items) {
+                    $.each(items, function (i, item) {
+                        $('#CustomerOrder').append('<tr><td style="width:200px">' + item.ItemName + '</td>' + '<td style="width:30px" class="price" id="price">' + item.ItemPrice + ' <span>$</span></td><td class="glyphicon glyphicon-remove" style="width:80px;text-align:right" id="deleteService"></td></tr>');
+
+                        $.ajax({
+                           type: 'POST',
+                           url: 'https://localhost:44382/api/Restaurant/cusOrder',
+                           data: {
+                               RestaurantMail: span.innerText,
+                               TableName: tabName.innerText,
+                               ItemName: item.ItemName,
+                               ItemPrice: item.ItemPrice,
+                           }
+                       })
+                   })
+               }
+           })
+        })
+
+        $('#CustomerOrder').on('click', '#deleteService', function () {
+            var row = $(this).closest('tr');
+            var ordername = row.find("td:eq(0)").text();
+            var orderprice = row.find("td:eq(1)").text();
+            var neworder = orderprice.split("");
+            row.remove();
+            $.ajax({
+                method: 'DELETE',
+                url: 'https://localhost:44382/api/Restaurant/cusOrderDelete/?mail=' + '@User.Identity.Name' + '&tablename='+tabName.innerText + '&itemname=' + ordername + '&itemprice=' + neworder[0] ,
+                
+            })
+        })
+    })
+
+
+
+
+</script>

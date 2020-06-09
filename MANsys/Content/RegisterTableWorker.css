@@ -1,0 +1,87 @@
+﻿h1{
+  
+    position: fixed;
+    margin-left: 16%;
+    margin-top:-2%;
+
+}
+
+h3 {
+    position: fixed;
+    margin-left: 16%;
+    margin-top:2%;
+    
+}
+#CatName{
+    font-size:20px;
+ 
+}
+.container {
+    position: fixed;
+    margin-left: 15%;
+    margin-top:5%;
+
+}
+#completedBtn{
+    position:fixed;
+    margin-left:62%;
+    margin-top:2%;
+    width:22rem;
+    font-size:1.8rem;
+
+}
+.selectpicker {
+    width: 200px;
+    height: 3.5rem;
+}
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 50%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: center;
+    width:250px;
+}
+#catTable{
+    margin-left:25%;    
+}
+.tab-content{
+    height:100%;
+}
+#itemTable , #restaurantTable{
+    margin-left:10%;
+    width:80%;
+}
+#restaurantTable th, #itemTable th {
+    height: 4rem;
+}
+#restaurantTable td, #itemTable td, #catTable td{
+    height:2rem;
+}
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+.navbar-link {
+    color: #0062cc;
+    background-color: transparent;
+    border-color: transparent transparent gray;
+    border-bottom: 3px solid !important;
+    font-size: 16px;
+    font-weight: bold;
+    border: 1px solid transparent;
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+    color: gray;
+    font-weight: 600;
+    text-align:center;
+}
+.nav-link:hover {
+    border: none;
+}
+#addCategory, #additem, #addtable {
+    height: 30px;
+    width: 100px;
+}
