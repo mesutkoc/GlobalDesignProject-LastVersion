@@ -55,7 +55,7 @@
     </div>
     <div class="page-content p-5 tab-content" id="content">
         <div id="home" class="container tab-pane active">
-            <h2>Welcome to <span id="RESTAURANTNAME"></span> Restaurant</h2>
+            <h2>Welcome <span id="RESTAURANTNAME"></span> </h2>
             <h3>Restaurant Mail: <span id="LogRest">@User.Identity.Name</span></h3>
             <p>Restaurant Management and Reservation System - Global Design Project</p>
          
@@ -786,7 +786,7 @@
         $(document).ready(function () {
             $.ajax({
                 type: 'GET',
-                url: 'https://localhost:44382/api/restaurant/graph/daily',
+                url: 'https://localhost:44382/api/restaurant/graph/daily/?restname='+'@User.Identity.Name',
                 success: function (items) {
 
                     var dateArr = [];

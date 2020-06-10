@@ -98,7 +98,7 @@
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         var dateTime = date + ' ' + time;
         $.ajax({
-            url: 'https://localhost:44382/api/Restaurant/UpdateCustomerTable/?tablename=' + tabName.innerText,
+            url: 'https://localhost:44382/api/Restaurant/UpdateCustomerTable/?tablename=' + tabName.innerText+'&resname='+'@User.Identity.Name',
             method: 'PUT',
             data: {
                 TableBooking: 'Reserv'
@@ -111,7 +111,7 @@
                 url: 'https://localhost:44382/api/Restaurant/GetCat/?mail=' +'@User.Identity.Name',
                 success: function (cats) {
                     $.each(cats, function (i, cat) {
-                        $('#categoryname').append('<button type="button" class="btn" style="background-color:#5cb85c;color: white; margin:.5rem;height: 7rem;width:10rem;float:left; border-radius: 12px;">' + cat.CategoryName + '</button>')
+                        $('#categoryname').append('<button type="button" class="btn" style="background-color:#5cb85c;color: white; margin:.5rem;height: 7rem;min-width:10rem;float:left; border-radius: 12px;">' + cat.CategoryName + '</button>')
                     })
                 }
             });
@@ -121,7 +121,7 @@
                 url: 'https://localhost:44382/api/Restaurant/GetOrder/?mail=' + '@User.Identity.Name' + '&tablename=' + tabName.innerText,
                 success: function (cats) {
                     $.each(cats, function (i, cat) {
-                        $('#CustomerOrder').append('<tr><td style="width:200px">' + cat.ItemName + '</td>' + '<td style="width:20px" class="price" id="price">' + cat.ItemPrice + ' <span>$</span></td><td class="glyphicon glyphicon-remove" style="width:80px;text-align:right" id="deleteService"></td></tr>');
+                        $('#CustomerOrder').append('<tr><td style="width:200px">' + cat.ItemName + '</td>' + '<td style="width:30px" class="price" id="price">' + cat.ItemPrice + ' <span>$</span></td><td class="glyphicon glyphicon-remove" style="width:80px;text-align:right" id="deleteService"></td></tr>');
                     })
                 }
             });
@@ -155,7 +155,7 @@
                         $('#itemRec').append('<tr><td style="width:200px;text-align:left">' + result[i] + '</td><td style="width:50px;text-align:left">' + Object.values(dict)[i][0] + '</td><td style="width:50px;text-align:left">' + Object.values(dict)[i][1] + '</td><td style="width:50px;text-align:left">' + parseInt(Object.values(dict)[i][0]) * parseInt(Object.values(dict)[i][1]) + ' $</td></tr>');
                     }
 
-                    
+
                     sum = arrayPrice.reduce(function (a, b) {
                         return a + b;
                     }, 0);
@@ -170,10 +170,10 @@
         $('#Print').click(function () {
             $.ajax({
                 method: 'DELETE',
-                url: 'https://localhost:44382/api/Restaurant/CusTableDelete/?tablename=' + tabName.innerText,
+                url: 'https://localhost:44382/api/Restaurant/CusTableDelete/?tablename=' + tabName.innerText+ '&restname='+'@User.Identity.Name',
                 success: function () {
                     $.ajax({
-                        url: 'https://localhost:44382/api/Restaurant/UpdateCustomerTable/?tablename=' + tabName.innerText,
+                        url: 'https://localhost:44382/api/Restaurant/UpdateCustomerTable/?tablename=' + tabName.innerText+'&resname='+'@User.Identity.Name',
                         method: 'PUT',
                         data: {
                             TableBooking: 'Free'
@@ -252,7 +252,7 @@
             $.ajax({
                 method: 'DELETE',
                 url: 'https://localhost:44382/api/Restaurant/cusOrderDelete/?mail=' + '@User.Identity.Name' + '&tablename='+tabName.innerText + '&itemname=' + ordername + '&itemprice=' + neworder[0] ,
-                
+
             })
         })
     })

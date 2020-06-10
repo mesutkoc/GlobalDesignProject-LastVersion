@@ -29,11 +29,11 @@ namespace MANsys.Controllers
 
         [Route("api/restaurant/graph/daily")]
         [HttpGet]
-        public IEnumerable<TableIncome> getIncomesDaily()
+        public IEnumerable<TableIncome> getIncomesDaily(string restname)
         {
             using (GlobalDesignEntities entities = new GlobalDesignEntities())
             {
-                return entities.TableIncome.ToList();
+                return entities.TableIncome.Where(s => s.RestaurantMail == restname).ToList();
             }
         }
 
@@ -161,7 +161,7 @@ namespace MANsys.Controllers
 
         [Route("api/Restaurant/CusTableDelete")]
         [HttpDelete]
-        public HttpResponseMessage DeleteTableOrder(string tablename)
+        public HttpResponseMessage DeleteTableOrder(string tablename,string restname)
         {
             using (GlobalDesignEntities entities = new GlobalDesignEntities())
             {
@@ -449,13 +449,13 @@ namespace MANsys.Controllers
 
         [Route("api/Restaurant/UpdateCustomerTable")]
         [HttpPut]
-        public HttpResponseMessage UpdateCusTable(string tablename, RestaurantTable tables)
+        public HttpResponseMessage UpdateCusTable(string tablename,string resname, RestaurantTable tables)
         {
             using (GlobalDesignEntities entities = new GlobalDesignEntities())
             {
                 try
                 {
-                    var entity = entities.RestaurantTable.FirstOrDefault(e => e.TableName == tablename);
+                    var entity = entities.RestaurantTable.FirstOrDefault(e => e.TableName == tablename && e.RestaurantMail==resname);
                     if (entity == null)
                     {
                         return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Tables not found");
