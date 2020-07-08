@@ -310,6 +310,7 @@ namespace MANsys.Controllers
                 }
             }
         }
+
         [Route("api/Restaurant/DeleteProcess")]
         [HttpDelete]
         public HttpResponseMessage DeleteProcess(int id)
@@ -336,11 +337,11 @@ namespace MANsys.Controllers
             }
         }
 
+
         [Route("api/restaurant/tables/empty")]
         [HttpGet]
         public IEnumerable<RestaurantTable> listOfTables(string restaurantName)
         {
-
             using (GlobalDesignEntities entities = new GlobalDesignEntities())
             {
                 var name = entities.RestaurantAccounts.Where(s => s.RestaurantName == restaurantName).FirstOrDefault();

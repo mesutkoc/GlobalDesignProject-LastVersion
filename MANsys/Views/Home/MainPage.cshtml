@@ -44,7 +44,6 @@
                 <a class="nav-link" data-toggle="tab" href="#CategorySetting">Category Updates<span style="font-size:16px;" class="pull-right hidden-xs glyphicon glyphicon-th-large"></span></a>
             </li>
 
-
             <li>
                 <form method="post" action="@Url.Action("SignOut", "Account")" id="signoutfrm" style="display:none;">
                     @Html.AntiForgeryToken()
@@ -340,7 +339,7 @@
                 success: function (reservation) {
                     $.each(reservation, function (i, reserv) {
                         $('#Reservation').append(
-                            '<div class="card text-white mb-3" style="background-color:#f0ad4e; margin:1rem;max-width: 18rem;float:left; border-radius: 12px;">' +
+                            '<div class="card text-white mb-3" style="background-color:#f0ad4e; margin:1rem;min-width: 18rem;float:left; border-radius: 12px;">' +
                             '<div class="card-header text-center">' + reserv.BookingMessage + '</div>' +
                             '<div class="card-body  text-center">'+
                                 '<h5 class="card-title">' + reserv.CustomerName + '</h5>' +
